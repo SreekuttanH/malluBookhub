@@ -1,0 +1,400 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/login.css' %}">
+    <title>Book Hub</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+<!--
+
+TemplateMo 546 Sixteen Clothing
+
+https://templatemo.com/tm-546-sixteen-clothing
+
+-->
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="{% static 'assets/css/fontawesome.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/templatemo-sixteen.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/owl.css' %}">
+
+  </head>
+
+  <body>
+
+    <!-- ***** Preloader Start ***** -->
+    <div id="preloader">
+        <div class="jumper">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>  
+    <!-- ***** Preloader End ***** -->
+
+    <!-- Header -->
+    <header class="">
+      <nav class="navbar navbar-expand-lg navbar-fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="/"><h2>Book  <em>Hub</em></h2></a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item active">
+                <a class="nav-link " href="/">Home
+                  <span class="sr-only">(current)</span>
+                </a>
+              </li> 
+              {% if user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link " href="{% url 'user_logout' %}">Logout</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="">{{user}}</a>
+               
+               
+              </li>
+            
+              {% else %}
+             
+              <li class="nav-item">
+                <a class="nav-link" href="account/user_login">Login</a>
+              </li>
+              {% endif %}
+ 
+
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    {% block content %}
+    
+
+    <!-- Page Content -->
+    <!-- Banner Starts Here -->
+
+     {% if user.is_authenticated %}
+     <div class="banner header-text">
+      <div class="owl-banner owl-carousel">
+        <div class="banner-item-01">
+          <div class="text-content">
+            <h4>welcome {{user}}</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% else %}
+     <div class="banner header-text">
+      <div class="owl-banner owl-carousel">
+        <div class="banner-item-01">
+          <div class="text-content">
+            <h4>welcome</h4>
+            {% if user.is_authenticated %}
+            <h2>welcome {{user}}</h2>
+            {% else %}
+            <h2>Get your best Books</h2>
+            {% endif %}
+          </div>
+        </div>
+
+      </div>
+    </div>
+    {% endif %}
+    
+    <!-- Banner Ends Here -->
+   
+    
+   
+
+
+   <!----------------->
+    <div class="container">
+      <section class="search">
+        <div class="row">
+
+          <div class="col-md-12 col-12 col-sm-12 form_div">
+            <form class="form-inline my-2 my-lg-0 pt-10  search_form" method="GET" action="{% url 'search' %}">
+              <input class="form-control  mr-sm-2 " id="form_input" name="search" type="search" placeholder="Search Book name" aria-label="Search">
+              <button class="btn btn-outline-success my-2 my-sm-0 " id="form_btn" type="submit">Search</button>
+            </form>
+
+          </div>
+        </div>
+      </section>
+    </div>
+
+  
+
+  <!----------------->
+
+    <div class="latest-products">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="section-heading">
+              <h2>Malayalam Novel</h2>
+              {% if user.is_authenticated %}
+              <a href="{% url 'all_book_details' novels_id  %}"> view all Novels  <i class="fa fa-angle-right"></i></a>
+
+              {% else %}
+              <a href="account/user_login">view all Novels  <i class="fa fa-angle-right"></i></a>
+              {% endif %}
+            </div>
+          </div>
+         
+          {% for i in book %}
+          
+          <div class="col-md-3">
+            <div class="product-item">
+              <a href="{% url 'book_details' i.id %}"><img src="{{i.image.url}}" style="height: 220px; width:160px" alt="no"></a>
+              <div class="down-content">
+                <a href="{% url 'book_details' i.id %}"><h4>{{i.name}}</h4></a>
+                {% if i.available is True %}
+                <p class="text-success">available now</p>
+                {% else %}
+                <p class="text-danger">not available</p>
+                {% endif %}
+               
+                <!-- <p>{{i.desc|truncatewords:3}}</p> -->
+<!-- 
+                {% if user.is_authenticated %}
+                <button type="button" class="btn btn-primary"><a class="text-light" href="{% url 'book_details' i.id %}">Click Here</a></button>
+      
+
+                {% else %}
+                <button type="button" class="btn btn-primary"><a class="text-light" href="account/user_login">Sign in to Download</a></button>
+               {% endif %} -->
+                <!-- <span>Reviews (24)</span> -->
+              </div>
+            </div>
+          </div>
+
+          {% endfor %}
+         
+         
+         
+         
+        </div>
+      </div>
+    </div>
+    
+  
+
+<!------------------------>
+
+
+<div class="latest-products">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="section-heading">
+          <h2>Malayalam Poem</h2>
+          {% if user.is_authenticated %}
+          <a href="{% url 'all_book_details' poems_id  %}">view all Poems <i class="fa fa-angle-right"></i></a> 
+          {% else %}
+          <a href="account/user_login">view all Poems  <i class="fa fa-angle-right"></i></a>
+          {% endif %}
+        </div>
+      </div>
+      {% for i in poem_book %}
+      <div class="col-md-3">
+        <div class="product-item">
+          <a href="{% url 'book_details' i.id %}"><img src="{{i.image.url}}" style="height: 220px; width:160px" alt=""></a>
+          <div class="down-content">
+            <a href="{% url 'book_details' i.id %}"><h4>{{i.name}}</h4></a>
+            {% if i.available is True %}
+            <p class="text-success">available now</p>
+            {% else %}
+            <p class="text-danger">not available</p>
+            {% endif %}
+<!--            
+            <p>{{i.desc|truncatewords:3}}</p>
+
+-->
+
+           
+          </div>
+        </div>
+      </div>
+
+      {% endfor %}
+
+     
+     
+     
+     
+    </div>
+  </div>
+</div>
+
+<!------------------------------->
+
+<div class="latest-products">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="section-heading">
+          <h2>Malayalam Story</h2>
+          {% if user.is_authenticated %}
+          <a href="{% url 'all_book_details' storys_id  %}">view all Story  <i class="fa fa-angle-right"></i></a>
+          {% else %}
+          <a href="account/user_login">view all Storys  <i class="fa fa-angle-right"></i></a>
+          {% endif %}
+        </div>
+      </div>
+      {% for i in story_book %}
+      <div class="col-md-3">
+        <div class="product-item">
+          <a href="{% url 'book_details' i.id %}"><img src="{{i.image.url}}" style="height: 220px; width:160px" alt=""></a>
+          <div class="down-content">
+            <a href="{% url 'book_details' i.id %}"><h4>{{i.name}}</h4></a>
+            {% if i.available is True %}
+            <p class="text-success">available now</p>
+            {% else %}
+            <p class="text-danger">not available</p>
+            {% endif %}
+           
+  
+            <!-- <span>Reviews (24)</span> -->
+          </div>
+        </div>
+      </div>
+
+      {% endfor %}
+
+     
+     
+     
+     
+    </div>
+  </div>
+</div>
+
+
+<!------------------------------->
+
+
+
+    <div class="best-features">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="section-heading">
+              <h2>About Book Hub</h2>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="left-content">
+              <h4>5 Reasons Why Reading is Important For Everyone</h4>
+              <!-- <p><a rel="nofollow" href="https://templatemo.com/tm-546-sixteen-clothing" target="_parent">This template</a>  <a rel="nofollow" href="https://templatemo.com/contact">Contact us</a> for more info.</p> -->
+              <p>One of the basic reasons why reading is important is that it helps you grow mentally, emotionally, and psychologically. Every book provides you an opportunity to learn and explore new ideas. Reading books increases your knowledge and makes you smarter.Some of another are below</p>
+              <ul class="featured-list">
+                <li><a href="#"> It helps you discover yourself</a></li>
+                <li><a href="#">It improves your Focus and Concentration</a></li>
+                <li><a href="#">Reading improves your emotional health</a></li>
+                <li><a href="#">It’s a great source of motivation</a></li>
+                <li><a href="#">It makes you more empathic</a></li>
+              </ul>
+              <!-- <a href="about.html" class="filled-button">Read More</a> -->
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="right-image">
+              <img src="{% static 'assets/images/feature-image.jpg' %}" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="call-to-action">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="inner-content">
+              <div class="row">
+                <div class="col-md-8">
+                  <h4>Free &amp; Unlimited <em>Books</em> in Pdf</h4>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque corporis amet elite author nulla.</p>
+                </div>
+                <div class="col-md-4">
+                  {% if user.is_authenticated %}
+                  {% else %}
+                  <a href="account/user_login" class="filled-button">Login</a>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="inner-content">
+              <p>Copyright &copy; 2020 Book Hub Co., Ltd.
+            
+            <!-- - Design: <a rel="nofollow noopener" href="https://templatemo.com" target="_blank">TemplateMo</a></p> -->
+            <a href="#" class=" fa fa-facebook"></a>
+            <a href="#" class="fa fa-twitter"></a>
+            <a href="#" class="fa fa-instagram"></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+
+
+    {% endblock %}
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+
+    <!-- Additional Scripts -->
+    <script src="{% static 'assets/js/custom.js' %}"></script>
+    <script src="{% static 'assets/js/owl.js' %}"></script>
+    <script src="{% static 'assets/js/slick.js' %}"></script>
+    <script src="{% static 'assets/js/isotope.js' %}"></script>
+    <script src="{% static 'assets/js/accordions.js' %}"></script>
+
+
+    <script language = "text/Javascript"> 
+      cleared[0] = cleared[1] = cleared[2] = 0; //set a cleared flag for each field
+      function clearField(t){                   //declaring the array outside of the
+      if(! cleared[t.id]){                      // function makes it static and global
+          cleared[t.id] = 1;  // you could use true and false, but that's more typing
+          t.value='';         // with more chance of typos
+          t.style.color='#fff';
+          }
+      }
+    </script>
+
+
+
+  </body>
+
+</html>

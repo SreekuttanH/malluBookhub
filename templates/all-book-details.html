@@ -1,0 +1,125 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+
+
+
+<!------->
+
+<div>
+  <br>
+  <br>
+  <br>
+</div>
+
+
+<div class="container">
+  <section class="search">
+    <div class="row">
+
+      <div class="col-md-12 col-12 col-sm-12 form_div">
+        <form class="form-inline my-2 my-lg-0 pt-10  search_form" method="GET" action="{% url 'search' %}">
+          <input class="form-control  mr-sm-2 " id="form_input" name="search" type="search" placeholder="Search Book name" aria-label="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0 " id="form_btn" type="submit">Search</button>
+        </form>
+
+      </div>
+    </div>
+  </section>
+</div>
+
+
+<!------->
+
+<div>
+  <br>
+  <br>
+</div>
+
+<!-- 
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="section-heading">
+           
+           
+          </div>
+        </div>
+
+        {% for i in data %}
+        <div class="col-md-3">
+          <div class="product-item">
+            <a href="{% url 'book_details' i.id %}"><img src="{{i.image.url}}" style="height: 220px; width:160px" alt=""></a>
+            <div class="down-content">
+              <a href="{% url 'book_details' i.id %}"><h4>{{i.name}}</h4></a>
+              {% if i.available is True %}
+            <p class="text-success">available now</p>
+            {% else %}
+            <p class="text-danger">not available</p>
+            {% endif %}
+  
+            </div>
+          </div>
+        </div>
+  
+        {% endfor %}
+       
+      </div>
+    </div> -->
+
+
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="section-heading">
+           
+           
+          </div>
+        </div>
+
+        {% for i in data %}
+        <div class="col-md-4">
+          <div class="product-item">
+            <a href="{% url 'book_details' i.id %}"><img src="{{i.image.url}}" style="height: 220px; width:160px" alt=""></a>
+            <div class="down-content">
+              <a href="{% url 'book_details' i.id %}"><h4>{{i.name}}</h4></a>
+              {% if i.available is True %}
+            <p class="text-success">available now</p>
+            {% else %}
+            <p class="text-danger">not available</p>
+            {% endif %}
+  
+            </div>
+          </div>
+        </div>
+  
+        {% endfor %}
+       
+      </div>
+    </div>
+
+
+
+
+
+   
+      <center><small class="text-primary">pages</small>
+     {% for p in data.paginator.page_range %}
+
+        <a href="?page={{p}}" class="btn btn-primary btn-sm {% if data.number == p %} active {% endif %}">{{p}}</a>
+       
+       
+      {% endfor %}
+      </center>
+   
+
+<div>
+<br>
+</div>
+
+
+{% endblock %}
+
+
